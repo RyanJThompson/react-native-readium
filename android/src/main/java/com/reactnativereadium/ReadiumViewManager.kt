@@ -2,10 +2,13 @@ package com.reactnativereadium
 
 import com.facebook.react.bridge.*
 import com.facebook.react.common.MapBuilder
+import com.facebook.react.module.annotations.ReactModule
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.facebook.react.uimanager.annotations.ReactPropGroup
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.ViewGroupManager
+import com.facebook.react.uimanager.ViewManagerDelegate
+import com.facebook.react.viewmanagers.ReadiumViewManagerInterface
 import com.reactnativereadium.reader.ReaderService
 import com.reactnativereadium.utils.File
 import com.reactnativereadium.utils.LinkOrLocator
@@ -14,12 +17,20 @@ import org.json.JSONObject
 import org.readium.r2.shared.publication.Link
 import org.readium.r2.shared.publication.Locator
 
+@ReactModule(name = ReadiumViewManager.NAME)
 class ReadiumViewManager(
   val reactContext: ReactApplicationContext
-) : ViewGroupManager<ReadiumView>() {
+) : ViewGroupManager<ReadiumView>(), ReadiumViewManagerInterface<ReadiumView> {
   private var svc = ReaderService(reactContext)
+  private val mDelegate: ViewManagerDelegate<ReadiumView>
 
-  override fun getName() = "ReadiumView"
+  init {
+    mDelegate = ReadiumViewManagerDelegate(this)
+  }
+
+  override fun getDelegate(): ViewManagerDelegate<ReadiumView>? = mDelegate
+
+  override fun getName() = NAME
 
   override fun createViewInstance(reactContext: ThemedReactContext): ReadiumView {
     return ReadiumView(reactContext)
@@ -130,6 +141,33 @@ class ReadiumViewManager(
     }
   }
 
+  // Fabric interface methods
+  override fun setFile(view: ReadiumView, value: ReadableMap?) {
+    if (value != null) {
+      setFile(view, value)
+    }
+  }
+
+  override fun setLocation(view: ReadiumView, value: ReadableMap?) {
+    if (value != null) {
+      setLocation(view, value)
+    }
+  }
+
+  override fun setPreferences(view: ReadiumView, value: String?) {
+    if (value != null) {
+      setPreferences(view, value)
+    }
+  }
+
+  override fun setHeight(view: ReadiumView, value: Int) {
+    view.dimensions.height = value
+  }
+
+  override fun setWidth(view: ReadiumView, value: Int) {
+    view.dimensions.width = value
+  }
+
   private fun buildForViewIfReady(view: ReadiumView) {
     var file = view.file
     if (file != null && view.isViewInitialized) {
@@ -142,6 +180,7 @@ class ReadiumViewManager(
   }
 
   companion object {
+    const val NAME = "ReadiumView"
     var ON_LOCATION_CHANGE = "onLocationChange"
     var ON_TABLE_OF_CONTENTS = "onTableOfContents"
     var COMMAND_CREATE = 1

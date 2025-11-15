@@ -18,12 +18,22 @@ buildscript {
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
+// Detect React Native new architecture
+def isNewArchitectureEnabled() {
+  return project.hasProperty("newArchEnabled") && project.newArchEnabled == "true"
+}
+
 def getExtOrDefault(name) {
   return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties['Readium_' + name]
 }
 
 def getExtOrIntegerDefault(name) {
   return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties['Readium_' + name]).toInteger()
+}
+
+// Apply React Native Gradle Plugin for new architecture
+if (isNewArchitectureEnabled()) {
+  apply plugin: "com.facebook.react"
 }
 
 android {
@@ -50,6 +60,27 @@ android {
 
   buildFeatures {
     viewBinding true
+  }
+
+  // Configure React settings for new architecture
+  if (isNewArchitectureEnabled()) {
+    react {
+      jsRootDir = file("../src/")
+      libraryName = "Readium"
+      codegenJavaPackageName = "com.reactnativereadium"
+    }
+  }
+
+  sourceSets {
+    main {
+      if (isNewArchitectureEnabled()) {
+        java.srcDirs += [
+          "src/main/java",
+          // Add generated files from codegen
+          "${project.buildDir}/generated/source/codegen/java"
+        ]
+      }
+    }
   }
 }
 

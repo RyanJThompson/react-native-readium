@@ -150,6 +150,18 @@
     "@d-i-t-a/reader": "^2.1.4",
     "use-deep-compare": "^1.1.0"
   },
+  "codegenConfig": {
+    "name": "RNReadiumSpec",
+    "type": "all",
+    "jsSrcsDir": "src/specs",
+    "outputDir": {
+      "ios": "ios/generated",
+      "android": "android/src/main/java/com/reactnativereadium/generated"
+    },
+    "android": {
+      "javaPackageName": "com.reactnativereadium"
+    }
+  },
   "engines": {
     "node": ">=18"
   },
