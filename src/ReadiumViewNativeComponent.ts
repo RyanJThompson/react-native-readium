@@ -63,6 +63,4 @@ export interface NativeProps extends ViewProps {
   onTableOfContents?: DirectEventHandler<TableOfContentsEvent>;
 }
 
-export default codegenNativeComponent<NativeProps>('ReadiumView', {
-  excludedPlatforms: ['web'],
-}) as HostComponent<NativeProps>;
+export default codegenNativeComponent<NativeProps>('ReadiumView') as HostComponent<NativeProps>;
