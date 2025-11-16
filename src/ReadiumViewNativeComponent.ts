@@ -37,7 +37,9 @@ export interface LinkEvent {
 }
 
 export interface TableOfContentsEvent {
-  toc: ReadonlyArray<LinkEvent>;
+  // Using string array for codegen compatibility
+  // Each item is a JSON-stringified LinkEvent
+  toc: string[];
 }
 
 export interface NativeProps extends ViewProps {
