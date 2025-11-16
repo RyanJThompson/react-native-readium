@@ -53,7 +53,22 @@ allows you to do things like:
 1. **iOS**: Requires an iOS target >= `13.0` (see the iOS section for more details).
 2. **Android**: Requires `compileSdkVersion` >= `31` (see the Android section for more details).
 
-:warning: This library does not current support `newArch`. Please disable `newArch` if you intend to use it. PR's welcome.
+#### New Architecture Support
+
+This library supports both the old and new React Native architecture (Fabric + TurboModules). The library will automatically work with whichever architecture your app is using.
+
+To enable the new architecture in your app:
+
+**iOS**: Set `RCT_NEW_ARCH_ENABLED=1` before running `pod install`:
+```sh
+cd ios
+RCT_NEW_ARCH_ENABLED=1 pod install
+```
+
+**Android**: Set `newArchEnabled=true` in your `android/gradle.properties`:
+```properties
+newArchEnabled=true
+```
 
 #### Install Module
 

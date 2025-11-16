@@ -2,6 +2,7 @@ package com.reactnativereadium
 
 import com.facebook.react.bridge.*
 import com.facebook.react.common.MapBuilder
+import com.facebook.react.module.annotations.ReactModule
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.facebook.react.uimanager.annotations.ReactPropGroup
 import com.facebook.react.uimanager.ThemedReactContext
@@ -14,12 +15,20 @@ import org.json.JSONObject
 import org.readium.r2.shared.publication.Link
 import org.readium.r2.shared.publication.Locator
 
+@ReactModule(name = ReadiumViewManager.NAME)
 class ReadiumViewManager(
   val reactContext: ReactApplicationContext
 ) : ViewGroupManager<ReadiumView>() {
   private var svc = ReaderService(reactContext)
 
-  override fun getName() = "ReadiumView"
+  companion object {
+    const val NAME = "ReadiumView"
+    var ON_LOCATION_CHANGE = "onLocationChange"
+    var ON_TABLE_OF_CONTENTS = "onTableOfContents"
+    var COMMAND_CREATE = 1
+  }
+
+  override fun getName() = NAME
 
   override fun createViewInstance(reactContext: ThemedReactContext): ReadiumView {
     return ReadiumView(reactContext)
@@ -139,11 +148,5 @@ class ReadiumViewManager(
         }
       }
     }
-  }
-
-  companion object {
-    var ON_LOCATION_CHANGE = "onLocationChange"
-    var ON_TABLE_OF_CONTENTS = "onTableOfContents"
-    var COMMAND_CREATE = 1
   }
 }

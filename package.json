@@ -154,5 +154,13 @@
     "node": ">=18"
   },
   "packageManager": "yarn@3.6.4",
-  "stableVersion": "1.2.1"
+  "stableVersion": "1.2.1",
+  "codegenConfig": {
+    "name": "RNReadiumSpec",
+    "type": "components",
+    "jsSrcsDir": "src",
+    "android": {
+      "javaPackageName": "com.reactnativereadium"
+    }
+  }
 }
