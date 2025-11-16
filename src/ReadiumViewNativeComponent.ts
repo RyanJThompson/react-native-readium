@@ -14,18 +14,15 @@ export interface FileStruct {
   initialLocationTitle?: string;
 }
 
-export interface LocatorLocations {
-  progression: Double;
-  position?: Int32;
-  totalProgression?: Double;
-}
-
 export interface LocatorEvent {
   href: string;
   type: string;
   target?: Int32;
   title?: string;
-  locations?: LocatorLocations;
+  // Flattened locations properties for codegen compatibility
+  progression?: Double;
+  position?: Int32;
+  totalProgression?: Double;
 }
 
 export interface LinkEvent {
