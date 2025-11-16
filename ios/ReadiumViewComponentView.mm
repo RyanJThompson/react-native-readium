@@ -9,7 +9,11 @@
 #import "RCTFabricComponentsPlugins.h"
 #import <React/RCTConversions.h>
 
+#if __has_include(<react_native_readium/react_native_readium-Swift.h>)
+#import <react_native_readium/react_native_readium-Swift.h>
+#else
 #import "react-native-readium-Swift.h"
+#endif
 
 using namespace facebook::react;
 
