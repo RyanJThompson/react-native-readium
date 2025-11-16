@@ -6,7 +6,7 @@ import UIKit
 import R2Navigator
 
 
-class ReadiumView : UIView, Loggable {
+@objc class ReadiumView : UIView, Loggable {
   var readerService: ReaderService = ReaderService()
   var readerViewController: ReaderViewController?
   var viewController: UIViewController? {
