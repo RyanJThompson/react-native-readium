@@ -102,37 +102,16 @@ using namespace facebook::react;
 
       if (event[@"toc"]) {
         NSArray *tocArray = event[@"toc"];
-        std::vector<facebook::react::ReadiumViewEventEmitter::OnTableOfContentsToc> tocVector;
+        std::vector<std::string> tocVector;
 
         for (NSDictionary *link in tocArray) {
-          facebook::react::ReadiumViewEventEmitter::OnTableOfContentsToc linkData = {};
-
-          if (link[@"href"]) {
-            linkData.href = std::string([link[@"href"] UTF8String]);
+          // Convert dictionary to JSON string for codegen compatibility
+          NSError *error = nil;
+          NSData *jsonData = [NSJSONSerialization dataWithJSONObject:link options:0 error:&error];
+          if (jsonData && !error) {
+            NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+            tocVector.push_back(std::string([jsonString UTF8String]));
           }
-          if (link[@"templated"]) {
-            linkData.templated = [link[@"templated"] boolValue];
-          }
-          if (link[@"type"]) {
-            linkData.type = std::string([link[@"type"] UTF8String]);
-          }
-          if (link[@"title"]) {
-            linkData.title = std::string([link[@"title"] UTF8String]);
-          }
-          if (link[@"height"]) {
-            linkData.height = [link[@"height"] intValue];
-          }
-          if (link[@"width"]) {
-            linkData.width = [link[@"width"] intValue];
-          }
-          if (link[@"bitrate"]) {
-            linkData.bitrate = [link[@"bitrate"] intValue];
-          }
-          if (link[@"duration"]) {
-            linkData.duration = [link[@"duration"] doubleValue];
-          }
-
-          tocVector.push_back(linkData);
         }
 
         eventData.toc = tocVector;
