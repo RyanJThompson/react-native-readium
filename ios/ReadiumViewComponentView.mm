@@ -71,22 +71,19 @@ using namespace facebook::react;
         eventData.title = std::string([event[@"title"] UTF8String]);
       }
 
-      // Handle nested locations object
+      // Handle flattened location properties (codegen compatibility)
       if (event[@"locations"]) {
         NSDictionary *locations = event[@"locations"];
-        facebook::react::ReadiumViewEventEmitter::OnLocationChangeLocations locationsData = {};
 
         if (locations[@"progression"]) {
-          locationsData.progression = [locations[@"progression"] doubleValue];
+          eventData.progression = [locations[@"progression"] doubleValue];
         }
         if (locations[@"position"]) {
-          locationsData.position = [locations[@"position"] intValue];
+          eventData.position = [locations[@"position"] intValue];
         }
         if (locations[@"totalProgression"]) {
-          locationsData.totalProgression = [locations[@"totalProgression"] doubleValue];
+          eventData.totalProgression = [locations[@"totalProgression"] doubleValue];
         }
-
-        eventData.locations = locationsData;
       }
 
       emitter->onLocationChange(eventData);
